@@ -3,7 +3,7 @@ package sql
 import java.util.Properties
 
 import org.apache.spark.sql.{SQLContext, SparkSession}
-import org.junit.{Before, Test}
+import org.junit.{After, Before, Test}
 import org.apache.spark.sql.functions._
 
 class SparkSql {
@@ -14,6 +14,11 @@ class SparkSql {
   def init(): Unit = {
     builder = SparkSession.builder().appName("sparkSql").master("local").getOrCreate()
     sql = builder.sqlContext
+  }
+
+  @After
+  def destroy(): Unit = {
+    builder.close()
   }
 
   @Test
@@ -37,9 +42,9 @@ class SparkSql {
     frame.createOrReplaceTempView(table)
     sql.sql(
       """
-        |insert overwrite table targetTable
-        |select id,name,age
-        |from tempTable
+        | insert overwrite table targetTable
+        | select id,name,age
+        | from tempTable
       """.stripMargin)
   }
 
@@ -65,7 +70,7 @@ class SparkSql {
   @Test
   def testAgg(): Unit = {
     val salary = sql.read.option("multiline", value = true).json(this.getClass.getResource("/") + "salary.json")
-    salary.groupBy("name").agg("salary" -> "max").sort(desc("max(salary)")).show
+    salary.groupBy("name").agg("salary" -> "max").sort(desc("max(salary)")).show()
   }
 
   @Test
