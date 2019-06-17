@@ -16,7 +16,7 @@ object StreamingKafka {
     val topics = Map("spark" -> 2)
     val lines = KafkaUtils.createStream(ssc, "db1:2181,db2:2181,db3:2181", "spark", topics).map(_._2)
     val ds1 = lines.flatMap(_.split("\\s+")).map((_, 1))
-    val ds2 = ds1.updateStateByKey[Int]((x: Seq[Int], y: Option[Int]) => {
+    val ds2 = ds1.updateStateByKey((x: Seq[Int], y: Option[Int]) => {
       Some(x.sum + y.getOrElse(0))
     })
 
