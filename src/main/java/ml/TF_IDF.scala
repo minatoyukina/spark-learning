@@ -23,15 +23,12 @@ object TF_IDF {
     )).toDF("label", "sentence")
     val tokenizer = new Tokenizer().setInputCol("sentence").setOutputCol("words")
     val wordsData = tokenizer.transform(source)
-    wordsData.show(false)
     val hashTF = new HashingTF().setInputCol("words").setOutputCol("rawFeatures").setNumFeatures(1000)
     val featuredData = hashTF.transform(wordsData)
-    featuredData.show(false)
     val idf = new IDF().setInputCol("rawFeatures").setOutputCol("features")
     val idfModel = idf.fit(featuredData)
     val result = idfModel.transform(featuredData)
     result.show(false)
-    result.select("label", "features").show(false)
   }
 
   def zh(): Unit = {
