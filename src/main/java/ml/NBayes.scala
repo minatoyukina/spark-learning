@@ -15,6 +15,7 @@ object NBayes {
     val trainDF = spark.sparkContext.textFile(this.getClass.getResource("/") + "mnist_train.csv").map {
       x =>
         val array = x.split(",")
+        Vectors.dense(array.takeRight(array.length - 1).map(_.toDouble))
         RawDataRecord(array(0).toDouble, Vectors.dense(array.takeRight(array.length - 1).map(_.toDouble)))
     }.toDF()
 
