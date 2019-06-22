@@ -19,7 +19,7 @@ object MnistToImg {
       count += 1
     }))
 
-    ImageIO.write(bufferedImage, "png", new File("abc.png"))
+    ImageIO.write(bufferedImage, "png", new File(s"${strings(0)}.png"))
   }
 
 }

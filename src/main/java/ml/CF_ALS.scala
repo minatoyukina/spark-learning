@@ -6,7 +6,7 @@ import org.apache.spark.ml.recommendation.ALS
 import org.apache.spark.ml.recommendation.ALS.Rating
 import org.apache.spark.sql.SparkSession
 
-object ALS2 {
+object CF_ALS {
   def main(args: Array[String]): Unit = {
     val spark: SparkSession = SparkSession.builder().master("local[*]").appName(this.getClass.getSimpleName).getOrCreate()
     Logger.getRootLogger.setLevel(Level.WARN)
